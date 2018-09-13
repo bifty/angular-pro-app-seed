@@ -11,7 +11,6 @@ import { AuthModule } from '../auth/auth.module';
 import { AppComponent } from './containers/app/app.component';
 
 // components
-
 // routes
 export const ROUTES: Routes = [];
 
