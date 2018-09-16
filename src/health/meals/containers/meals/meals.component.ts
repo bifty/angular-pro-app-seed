@@ -5,10 +5,7 @@ import { Store } from 'store';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
-import {
-  Meal,
-  MealsService,
-} from '../../../shared/services/meals/meals.service';
+import { Meal, MealsService } from '../../../shared/services/meals/meals.service';
 
 @Component({
   selector: 'meals',
@@ -20,7 +17,7 @@ import {
           <img src="/img/food.svg">
           Your meals
         </h1>
-        <a 
+        <a
           class="btn__add"
           [routerLink]="['../meals/new']">
           <img src="/img/add-white.svg">
@@ -32,7 +29,11 @@ import {
           <img src="/img/face.svg">
           No meals, add a new meal to start
         </div>
-        <!-- meals ngFor -->
+        <list-item
+          *ngFor="let meal of meals"
+          [item]="meal"
+          (remove)="removeMeal($event)">
+        </list-item>
       </div>
       <ng-template #loading>
         <div class="message">
@@ -41,13 +42,17 @@ import {
         </div>
       </ng-template>
     </div>
-  `,
+  `
 })
 export class MealsComponent implements OnInit, OnDestroy {
+
   meals$: Observable<Meal[]>;
   subscription: Subscription;
 
-  constructor(private store: Store, private mealsService: MealsService) {}
+  constructor(
+    private store: Store,
+    private mealsService: MealsService
+  ) { }
 
   ngOnInit() {
     this.meals$ = this.store.select<Meal[]>('meals');
@@ -57,4 +62,9 @@ export class MealsComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
+
+  removeMeal(event: Meal) {
+    this.mealsService.removeMeal(event.$key);
+  }
+
 }
