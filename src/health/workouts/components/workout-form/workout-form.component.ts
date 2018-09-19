@@ -1,19 +1,5 @@
-import {
-  Component,
-  OnChanges,
-  SimpleChanges,
-  Input,
-  Output,
-  EventEmitter,
-  ChangeDetectionStrategy,
-} from '@angular/core';
-import {
-  FormArray,
-  FormGroup,
-  FormBuilder,
-  FormControl,
-  Validators,
-} from '@angular/forms';
+import { Component, OnChanges, SimpleChanges, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { FormArray, FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 
 import { Workout } from '../../../shared/services/workouts/workouts.service';
 
@@ -35,6 +21,12 @@ import { Workout } from '../../../shared/services/workouts/workouts.service';
             <div class="error" *ngIf="required">
               Workout name is required
             </div>
+          </label>
+          <label>
+            <h3>Type</h3>
+            <workout-type 
+              formControlName="type">
+            </workout-type>
           </label>
         </div>
         
@@ -83,9 +75,10 @@ import { Workout } from '../../../shared/services/workouts/workouts.service';
         </div>
       </form>
     </div>
-  `,
+  `
 })
 export class WorkoutFormComponent implements OnChanges {
+
   toggled = false;
   exists = false;
 
@@ -103,9 +96,12 @@ export class WorkoutFormComponent implements OnChanges {
 
   form = this.fb.group({
     name: ['', Validators.required],
+    type: 'strength',
   });
-
-  constructor(private fb: FormBuilder) {}
+  
+  constructor(
+    private fb: FormBuilder
+  ) {}
 
   ngOnChanges(changes: SimpleChanges) {
     // if (this.meal && this.meal.name) {
@@ -161,4 +157,5 @@ export class WorkoutFormComponent implements OnChanges {
   toggle() {
     this.toggled = !this.toggled;
   }
+
 }
